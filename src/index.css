@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+
+body {
+  margin: 0;
+  font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #0f172a;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #1e293b; }
+::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+/* Leaflet custom markers */
+.custom-marker {
+  background: none;
+  border: none;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #1e293b;
+  color: white;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.leaflet-popup-tip {
+  background: #1e293b;
+}
+
+.light-mode .leaflet-popup-content-wrapper {
+  background: white;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+}
+
+.light-mode .leaflet-popup-tip {
+  background: white;
+}
