@@ -55,24 +55,24 @@ const AssetLookup = ({ isOpen, onClose, onSelectAsset, isDark }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-20 px-4">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-4 sm:pt-20 px-2 sm:px-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
       
       {/* Modal */}
-      <div className={`relative w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden ${
+      <div className={`relative w-full max-w-3xl rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] sm:max-h-[85vh] flex flex-col ${
         isDark ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-slate-200'
       }`}>
         {/* Header */}
-        <div className={`p-4 border-b ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg ${isDark ? 'bg-amber-500/10' : 'bg-amber-100'}`}>
-                <Truck className="w-5 h-5 text-amber-500" />
+        <div className={`p-3 sm:p-4 border-b flex-shrink-0 ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className={`p-1.5 sm:p-2 rounded-lg ${isDark ? 'bg-amber-500/10' : 'bg-amber-100'}`}>
+                <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
               </div>
               <div>
-                <h2 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Asset Lookup</h2>
-                <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Search and view individual machine details</p>
+                <h2 className={`text-base sm:text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Asset Lookup</h2>
+                <p className={`text-xs sm:text-sm hidden sm:block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Search individual machines</p>
               </div>
             </div>
             <button 
@@ -85,14 +85,14 @@ const AssetLookup = ({ isOpen, onClose, onSelectAsset, isDark }) => {
           
           {/* Search Bar */}
           <div className="relative">
-            <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`} />
+            <Search className={`absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`} />
             <input
               type="text"
-              placeholder="Search by Asset ID, type, location, operator..."
+              placeholder="Search by ID, type, location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               autoFocus
-              className={`w-full pl-12 pr-4 py-3 rounded-xl text-base transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+              className={`w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 ${
                 isDark 
                   ? 'bg-slate-900 border border-slate-700 text-white placeholder-slate-500' 
                   : 'bg-slate-100 border border-slate-200 text-slate-900 placeholder-slate-400'
@@ -101,7 +101,7 @@ const AssetLookup = ({ isOpen, onClose, onSelectAsset, isDark }) => {
             {searchQuery && (
               <button 
                 onClick={() => setSearchQuery('')}
-                className={`absolute right-4 top-1/2 -translate-y-1/2 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}
+                className={`absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -109,11 +109,11 @@ const AssetLookup = ({ isOpen, onClose, onSelectAsset, isDark }) => {
           </div>
           
           {/* Filters */}
-          <div className="flex items-center gap-3 mt-3">
+          <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-3 overflow-x-auto pb-1">
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
+              className={`px-2 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium flex-shrink-0 ${
                 isDark 
                   ? 'bg-slate-700 border border-slate-600 text-white' 
                   : 'bg-white border border-slate-200 text-slate-700'
@@ -127,122 +127,90 @@ const AssetLookup = ({ isOpen, onClose, onSelectAsset, isDark }) => {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
+              className={`px-2 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium flex-shrink-0 ${
                 isDark 
                   ? 'bg-slate-700 border border-slate-600 text-white' 
                   : 'bg-white border border-slate-200 text-slate-700'
               }`}
             >
               <option value="all">All Types</option>
-              <option value="Titan">Titan Spike Driver</option>
-              <option value="Gorilla">Gorilla Spike Puller</option>
-              <option value="Dragon">Dragon Spike Puller</option>
-              <option value="Raptor">Raptor Rail Lifter</option>
-              <option value="BTN">BTN Spike Driver</option>
+              <option value="Titan">Titan</option>
+              <option value="Gorilla">Gorilla</option>
+              <option value="Dragon">Dragon</option>
+              <option value="Raptor">Raptor</option>
+              <option value="BTN">BTN</option>
             </select>
-            <span className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-              {filteredAssets.length} machines found
+            <span className={`text-xs sm:text-sm flex-shrink-0 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+              {filteredAssets.length} found
             </span>
           </div>
         </div>
         
         {/* Asset List */}
-        <div className={`max-h-[60vh] overflow-y-auto ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
+        <div className={`flex-1 overflow-y-auto ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
           {filteredAssets.length === 0 ? (
-            <div className="p-12 text-center">
-              <Truck className={`w-12 h-12 mx-auto mb-3 ${isDark ? 'text-slate-600' : 'text-slate-300'}`} />
+            <div className="p-8 sm:p-12 text-center">
+              <Truck className={`w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 ${isDark ? 'text-slate-600' : 'text-slate-300'}`} />
               <p className={`font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>No machines found</p>
-              <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Try adjusting your search or filters</p>
             </div>
           ) : (
-            <div className="divide-y divide-slate-700/50">
+            <div className={`divide-y ${isDark ? 'divide-slate-700/50' : 'divide-slate-100'}`}>
               {filteredAssets.map(asset => (
                 <div
                   key={asset.id}
                   onClick={() => onSelectAsset(asset.id)}
-                  className={`p-4 cursor-pointer transition-colors ${
-                    isDark ? 'hover:bg-slate-700/50' : 'hover:bg-slate-50'
+                  className={`p-3 sm:p-4 cursor-pointer transition-colors ${
+                    isDark ? 'hover:bg-slate-700/50 active:bg-slate-700' : 'hover:bg-slate-50 active:bg-slate-100'
                   }`}
                 >
-                  <div className="flex items-start gap-4">
-                    {/* Status Indicator */}
-                    <div className={`relative w-12 h-12 rounded-xl flex items-center justify-center ${
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    {/* Status Icon */}
+                    <div className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 ${
                       isDark ? 'bg-slate-700' : 'bg-slate-100'
                     }`}>
-                      <Truck className={`w-6 h-6 ${
+                      <Truck className={`w-5 h-5 sm:w-6 sm:h-6 ${
                         asset.status === 'active' ? 'text-emerald-500' : 
                         asset.status === 'idle' ? 'text-amber-500' : 'text-rose-500'
                       }`} />
-                      <span className={`absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 ${
+                      <span className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border-2 ${
                         isDark ? 'border-slate-800' : 'border-white'
                       } ${statusDot[asset.status]}`}></span>
                     </div>
                     
                     {/* Asset Info */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`font-bold text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>{asset.id}</span>
-                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${statusColors[asset.status]}`}>
+                      <div className="flex items-center gap-2 mb-0.5 sm:mb-1">
+                        <span className={`font-bold text-sm sm:text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>{asset.id}</span>
+                        <span className={`px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-bold ${statusColors[asset.status]}`}>
                           {asset.status}
                         </span>
                         {asset.alerts > 0 && (
-                          <span className={`px-2 py-0.5 rounded text-xs font-bold ${isDark ? 'bg-rose-500/20 text-rose-400' : 'bg-rose-100 text-rose-700'}`}>
-                            {asset.alerts} alert{asset.alerts > 1 ? 's' : ''}
+                          <span className={`px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold ${isDark ? 'bg-rose-500/20 text-rose-400' : 'bg-rose-100 text-rose-700'}`}>
+                            {asset.alerts}!
                           </span>
                         )}
                       </div>
-                      <p className={`text-sm mb-2 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{asset.type}</p>
-                      
-                      <div className={`flex flex-wrap items-center gap-x-4 gap-y-1 text-xs ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" /> {asset.location}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Activity className="w-3 h-3" /> {asset.region}
-                        </span>
-                        {asset.operator && (
-                          <span className="flex items-center gap-1">
-                            <User className="w-3 h-3" /> {asset.operator}
-                          </span>
-                        )}
+                      <p className={`text-xs sm:text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{asset.type}</p>
+                      <p className={`text-xs mt-0.5 truncate ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
+                        {asset.location} • {asset.region}
+                      </p>
+                    </div>
+                    
+                    {/* Stats - Hidden on very small screens */}
+                    <div className="hidden sm:flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                      {asset.status === 'active' && (
+                        <div className="text-center">
+                          <div className={`text-sm sm:text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{asset.utilization}%</div>
+                          <div className={`text-[10px] sm:text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Util</div>
+                        </div>
+                      )}
+                      <div className="text-center">
+                        <div className={`text-sm sm:text-lg font-bold ${asset.fuelLevel < 40 ? 'text-amber-500' : isDark ? 'text-white' : 'text-slate-900'}`}>{asset.fuelLevel}%</div>
+                        <div className={`text-[10px] sm:text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Fuel</div>
                       </div>
                     </div>
                     
-                    {/* Quick Stats */}
-                    <div className="flex items-center gap-4">
-                      {asset.status === 'active' && (
-                        <>
-                          <div className="text-center">
-                            <div className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{asset.utilization}%</div>
-                            <div className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Util.</div>
-                          </div>
-                          <div className="text-center">
-                            <div className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{asset.cycles}</div>
-                            <div className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Cycles</div>
-                          </div>
-                        </>
-                      )}
-                      <div className="text-center">
-                        <div className={`text-lg font-bold ${asset.fuelLevel < 40 ? 'text-amber-500' : isDark ? 'text-white' : 'text-slate-900'}`}>{asset.fuelLevel}%</div>
-                        <div className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Fuel</div>
-                      </div>
-                      
-                      {/* Capabilities */}
-                      <div className="flex items-center gap-1">
-                        {asset.hasLidar && (
-                          <div className={`p-1.5 rounded ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'}`}>
-                            <Radio className="w-3 h-3 text-emerald-500" />
-                          </div>
-                        )}
-                        {asset.hasCamera && (
-                          <div className={`p-1.5 rounded ${isDark ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
-                            <Camera className="w-3 h-3 text-blue-500" />
-                          </div>
-                        )}
-                      </div>
-                      
-                      <ChevronRight className={`w-5 h-5 ${isDark ? 'text-slate-600' : 'text-slate-300'}`} />
-                    </div>
+                    <ChevronRight className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${isDark ? 'text-slate-600' : 'text-slate-300'}`} />
                   </div>
                 </div>
               ))}
@@ -251,14 +219,14 @@ const AssetLookup = ({ isOpen, onClose, onSelectAsset, isDark }) => {
         </div>
         
         {/* Footer */}
-        <div className={`p-4 border-t ${isDark ? 'border-slate-700 bg-slate-900/50' : 'border-slate-200 bg-slate-50'}`}>
+        <div className={`p-3 sm:p-4 border-t flex-shrink-0 ${isDark ? 'border-slate-700 bg-slate-900/50' : 'border-slate-200 bg-slate-50'}`}>
           <div className="flex items-center justify-between">
-            <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+            <p className={`text-xs sm:text-sm hidden sm:block ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
               Press <kbd className={`px-1.5 py-0.5 rounded text-xs font-mono ${isDark ? 'bg-slate-700' : 'bg-slate-200'}`}>ESC</kbd> to close
             </p>
             <button 
               onClick={onClose}
-              className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              className={`w-full sm:w-auto px-4 py-2 rounded-lg text-sm font-medium ${
                 isDark ? 'bg-slate-700 text-white hover:bg-slate-600' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
               }`}
             >
