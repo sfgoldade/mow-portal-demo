@@ -5,12 +5,13 @@ import {
   Bell, Search, User, Menu, BarChart3, FileText, Package, Shield,
   Calendar, Zap, Timer, Target, ArrowUpRight, ArrowDownRight,
   ChevronDown, MoreHorizontal, Eye, Play, X, Sun, Moon, Video,
-  AlertCircle, Tool, Cpu, Navigation
+  AlertCircle, Tool, Cpu, Navigation, Sparkles
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../components/ThemeContext';
 import FleetMap from '../components/FleetMap';
 import AssetLookup from '../components/AssetLookup';
+import NotificationsPanel from '../components/NotificationsPanel';
 
 // Mock data
 const mockFleetData = {
@@ -119,10 +120,15 @@ const NavItem = ({ to, icon: Icon, label, active, badge, isDark, onClick }) => {
     </>
   );
   
-  if (onClick) {
-    return <button onClick={onClick} className={className}>{content}</button>;
-  }
-  return <Link to={to} className={className}>{content}</Link>;
+  return (
+    <Link 
+      to={to} 
+      onClick={onClick}
+      className={className}
+    >
+      {content}
+    </Link>
+  );
 };
 
 const Card = ({ children, className = '', isDark }) => (
@@ -311,6 +317,7 @@ export default function MOWPortalDemo() {
   const { isDark, toggleTheme } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [assetLookupOpen, setAssetLookupOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const navigate = useNavigate();
 
   // Close sidebar on mobile when route changes
@@ -407,14 +414,31 @@ export default function MOWPortalDemo() {
             <Search className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-1">
-            <button className={`relative p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700 text-slate-400' : 'hover:bg-slate-100 text-slate-600'}`}>
+          <div className="flex items-center gap-1 relative">
+            <button 
+              onClick={() => setNotificationsOpen(!notificationsOpen)}
+              className={`relative p-2 rounded-lg transition-colors ${
+                notificationsOpen 
+                  ? isDark ? 'bg-slate-700 text-amber-400' : 'bg-amber-100 text-amber-600'
+                  : isDark ? 'hover:bg-slate-700 text-slate-400' : 'hover:bg-slate-100 text-slate-600'
+              }`}
+            >
               <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full"></span>
+              <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full animate-pulse"></span>
             </button>
+            
+            {/* Notifications Panel */}
+            <NotificationsPanel 
+              isOpen={notificationsOpen}
+              onClose={() => setNotificationsOpen(false)}
+              isDark={isDark}
+              onNavigate={(path) => navigate(path)}
+            />
+            
             <button 
               onClick={toggleTheme} 
               className={`p-2 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-100'}`}
+              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {isDark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-600" />}
             </button>
@@ -423,8 +447,8 @@ export default function MOWPortalDemo() {
                 <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Demo User</p>
                 <p className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>BNSF Railway</p>
               </div>
-              <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center ${isDark ? 'bg-slate-700' : 'bg-amber-100'}`}>
-                <User className={`w-4 h-4 lg:w-5 lg:h-5 ${isDark ? 'text-slate-300' : 'text-amber-700'}`} />
+              <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center cursor-pointer transition-transform hover:scale-105 ${isDark ? 'bg-gradient-to-br from-amber-500 to-amber-600' : 'bg-gradient-to-br from-amber-400 to-amber-500'}`}>
+                <User className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
               </div>
             </div>
           </div>
@@ -434,11 +458,11 @@ export default function MOWPortalDemo() {
       <div className="flex pt-14 lg:pt-16">
         {/* Sidebar - Desktop always visible, Mobile slide-in */}
         <aside className={`
-          fixed lg:sticky top-14 lg:top-16 left-0 h-[calc(100vh-3.5rem)] lg:h-[calc(100vh-4rem)] 
-          w-64 z-40 transition-transform duration-300 ease-in-out
+          fixed top-14 lg:top-16 left-0 h-[calc(100vh-3.5rem)] lg:h-[calc(100vh-4rem)] 
+          w-64 transition-transform duration-300 ease-in-out overflow-hidden
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
           ${isDark ? 'bg-slate-800 border-r border-slate-700' : 'bg-white border-r border-slate-200'}
-        `}>
+        `} style={{ zIndex: 45 }}>
           <nav className="p-4 space-y-1 overflow-y-auto h-full pb-20 lg:pb-4">
             <NavItem to="/" icon={Activity} label="Rail Ops Overview" isDark={isDark} onClick={() => setSidebarOpen(false)} />
             <NavItem to="/fleet" icon={Truck} label="Fleet & Assets" isDark={isDark} onClick={() => setSidebarOpen(false)} />
@@ -458,31 +482,53 @@ export default function MOWPortalDemo() {
           </nav>
         </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 min-w-0 pb-20 lg:pb-0">
+        {/* Main Content - Add left margin on desktop for fixed sidebar */}
+        <main className="flex-1 min-w-0 pb-20 lg:pb-0 lg:ml-64">
           <div className="p-3 lg:p-6">
+            {/* Welcome Banner */}
+            <div className={`mb-4 lg:mb-6 p-4 lg:p-5 rounded-xl relative overflow-hidden ${
+              isDark 
+                ? 'bg-gradient-to-r from-amber-500/20 via-amber-600/10 to-transparent border border-amber-500/20' 
+                : 'bg-gradient-to-r from-amber-50 via-amber-100/50 to-white border border-amber-200'
+            }`}>
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-1">
+                  <Sparkles className={`w-5 h-5 ${isDark ? 'text-amber-400' : 'text-amber-500'}`} />
+                  <span className={`text-sm font-medium ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>Good morning!</span>
+                </div>
+                <h2 className={`text-xl lg:text-2xl font-bold mb-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  Welcome back, Demo User
+                </h2>
+                <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  Your fleet is performing <span className="text-emerald-500 font-semibold">12% above</span> average today. 47 assets tracked across 5 regions.
+                </p>
+              </div>
+              {/* Decorative element */}
+              <div className={`absolute right-0 top-0 w-32 h-32 rounded-full blur-3xl ${isDark ? 'bg-amber-500/10' : 'bg-amber-200/50'}`}></div>
+            </div>
+
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 lg:mb-6">
               <div>
-                <h2 className={`text-xl lg:text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Rail Operations Overview</h2>
+                <h2 className={`text-lg lg:text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Rail Operations Overview</h2>
                 <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Real-time fleet status and metrics</p>
               </div>
               <div className="flex items-center gap-2 lg:gap-3">
-                <select className={`px-3 py-2 rounded-lg text-sm font-medium ${
+                <select className={`px-3 py-2 rounded-lg text-sm font-medium cursor-pointer ${
                   isDark 
-                    ? 'bg-slate-800 border border-slate-700 text-white' 
-                    : 'bg-white border border-slate-200 text-slate-900 shadow-sm'
+                    ? 'bg-slate-800 border border-slate-700 text-white hover:border-slate-600' 
+                    : 'bg-white border border-slate-200 text-slate-900 shadow-sm hover:border-slate-300'
                 }`}>
                   <option>Last 24 Hours</option>
                   <option>Last 7 Days</option>
                   <option>Last 30 Days</option>
                 </select>
-                <button className={`hidden sm:flex px-3 lg:px-4 py-2 rounded-lg text-sm font-medium items-center gap-2 ${
+                <button className={`hidden sm:flex px-3 lg:px-4 py-2 rounded-lg text-sm font-medium items-center gap-2 transition-all ${
                   isDark 
-                    ? 'bg-slate-800 border border-slate-700 text-white hover:bg-slate-700' 
-                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm'
+                    ? 'bg-amber-500 text-slate-900 hover:bg-amber-400' 
+                    : 'bg-amber-500 text-white hover:bg-amber-600 shadow-sm'
                 }`}>
-                  <FileText className="w-4 h-4" /> <span className="hidden lg:inline">Export</span>
+                  <FileText className="w-4 h-4" /> <span className="hidden lg:inline">Export Report</span>
                 </button>
               </div>
             </div>

@@ -16,29 +16,43 @@ body {
 ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-/* Leaflet custom markers */
+/* Leaflet z-index fix - ensure map stays below modals */
+.leaflet-container {
+  z-index: 1 !important;
+}
+
+.leaflet-pane {
+  z-index: 1 !important;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 2 !important;
+}
+
+/* Custom markers */
 .custom-marker {
   background: none;
   border: none;
 }
 
 .leaflet-popup-content-wrapper {
-  background: #1e293b;
-  color: white;
+  background: white;
+  color: #111827;
   border-radius: 8px;
-  border: 1px solid #334155;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .leaflet-popup-tip {
-  background: #1e293b;
+  background: white;
 }
 
-.light-mode .leaflet-popup-content-wrapper {
-  background: white;
-  color: #111827;
-  border: 1px solid #e5e7eb;
+.leaflet-popup-content {
+  margin: 8px 10px;
 }
 
-.light-mode .leaflet-popup-tip {
-  background: white;
+/* Ensure modals are above everything */
+.modal-overlay {
+  z-index: 100 !important;
 }
